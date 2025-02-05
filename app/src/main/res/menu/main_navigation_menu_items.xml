@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home_page_btn"
+        android:icon="@drawable/ic_home"
+        android:title="@string/home_page" />
+    <item android:id="@+id/leaderboard_btn"
+        android:title="@string/leaderboard"
+        android:icon="@drawable/ic_leaderboard" />
+    <item android:id="@+id/status_btn"
+        android:title="@string/status"
+        android:icon="@drawable/ic_user" />
+</menu>
