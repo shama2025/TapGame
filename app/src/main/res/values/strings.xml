@@ -3,4 +3,6 @@
     <string name="home_page">Tap Game</string>
     <string name="leaderboard">Leaderboard</string>
     <string name="status">User Menu</string>
+    <string name="current_high_score_key">High Score</string>
+    <string name="curernt_taps">Current Taps</string>
 </resources>

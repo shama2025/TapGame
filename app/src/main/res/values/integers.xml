@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<integer name="saved_high_score_val">100</integer>
+    <integer name="saved_last_taps">00</integer>
+</resources>

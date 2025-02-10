@@ -7,7 +7,7 @@
     <item android:id="@+id/leaderboard_btn"
         android:title="@string/leaderboard"
         android:icon="@drawable/ic_leaderboard" />
-    <item android:id="@+id/status_btn"
-        android:title="@string/status"
-        android:icon="@drawable/ic_user" />
+<!--    <item android:id="@+id/status_btn"-->
+<!--        android:title="@string/status"-->
+<!--        android:icon="@drawable/ic_user" />-->
 </menu>

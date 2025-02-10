@@ -64,11 +64,11 @@
                 app:cardCornerRadius="8dp">
 
                 <TextView
-                    android:id="@+id/daysLoggedIn"
+                    android:id="@+id/high_score"
                     android:layout_width="181dp"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
-                    android:text="Days Logged In: 0"
+                    android:text="High Score: 0"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
             </androidx.cardview.widget.CardView>
