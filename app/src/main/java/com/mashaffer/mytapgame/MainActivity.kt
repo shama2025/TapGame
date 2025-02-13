@@ -70,4 +70,5 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getHighScore() = getSharedPrefs()?.getInt(getString(R.string.current_high_score_key), 0) ?: 0
-    private fun getLastTaps() = getSharedPrefs()?.getInt(getString(R.string.current_taps_key),
+    private fun getLastTaps() = getSharedPrefs()?.getInt(getString(R.string.current_taps_key), 0) ?: 0
+}
