@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private fun setup() {
         val highScoreTaps = getHighScore()
         var taps = getLastTaps()
+        numTaps.text = "Taps: $taps"
         highScore.text = "High Score: $highScoreTaps"
 
         tapBtn.setOnClickListener {
