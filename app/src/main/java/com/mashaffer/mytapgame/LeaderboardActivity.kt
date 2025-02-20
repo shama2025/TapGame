@@ -4,12 +4,9 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -19,7 +16,12 @@ class LeaderboardActivity : AppCompatActivity() {
     }
 
     // Populate the view
-    data class tempLeaderboardList(val username: String, val taps: Int)
+    data class tempLeaderboardList(val username: String, val taps: Int) : Comparable<Any> {
+        override fun compareTo(other: Any): Int {
+            TODO("Not yet implemented")
+        }
+    }
+
     private val leaderBoardView: RecyclerView by lazy {findViewById(R.id.leaderBoard) }
     private val mainNav: BottomNavigationView by lazy { findViewById(R.id.main_navigation) }
 
@@ -62,11 +64,10 @@ class LeaderboardActivity : AppCompatActivity() {
             tempLeaderboardList("Player 2", 500),
             tempLeaderboardList("Player 3", 53)
         )
-        val sortedPlayers = players.sortedBy { it.taps }
-        val leaderboardAdapter = LeaderboardAdapter(sortedPlayers)
-
+        val sortedPlayers = players.sortedByDescending { it.taps }
+        val customAdapter = LeaderboardAdapter(sortedPlayers)
         val recyclerView: RecyclerView = findViewById(R.id.leaderBoard)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = leaderboardAdapter
+        recyclerView.adapter = customAdapter
     }
 }

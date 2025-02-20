@@ -3,37 +3,44 @@ package com.mashaffer.mytapgame
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import org.w3c.dom.Text
 
-// Data class for leaderboard entries
-data class LeaderboardEntry(
-    val username: String,
-    val taps: Int
-)
+class LeaderboardAdapter (
+    private val players: List<LeaderboardActivity.tempLeaderboardList>) :
+    RecyclerView.Adapter<LeaderboardAdapter.ViewHoler>() {
+    companion object{
+        private const val MARGIN_SIZE = 20
+        private const val TAG = "LeaderboadAdapter"
+    }
 
-// Adapter for displaying leaderboard entries
-class LeaderboardAdapter(private val dataSet: List<LeaderboardActivity.tempLeaderboardList>) :
-    RecyclerView.Adapter<LeaderboardAdapter.ViewHolder>() {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHoler {
+        // Will display the leaderboard element
+        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.leaderboard_element, viewGroup, false)
+        return ViewHoler(view)
+    }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val textView: TextView = view.findViewById(R.id.leaderBoard)
+    // Number of players
+    override fun getItemCount() = players.size
 
-        // Bind data to view
-        fun bind(entry: LeaderboardActivity.tempLeaderboardList) {
-            textView.text = "${entry.username}: ${entry.taps} taps"
+    override fun onBindViewHolder(holder: ViewHoler, position: Int) {
+        holder.bind(position)
+    }
+    inner class ViewHoler(item: View): RecyclerView.ViewHolder(item){
+        // Username of player
+        val usernameTextView: TextView = item.findViewById(R.id.user_field)
+        // Number of total taps player has
+        val tapsTextView: TextView = item.findViewById(R.id.taps_field)
+        // Index of player list
+        val placeTextView: TextView = item.findViewById(R.id.place_field)
+
+        fun bind(position: Int){
+            tapsTextView.text = "Taps: ${String.format(players[position].taps.toString())}"
+            usernameTextView.text = "${players[position].username}"
+            placeTextView.text = "Place: ${(position + 1)}"
         }
     }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.leaderboard_activity, parent, false)
-        return ViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(dataSet[position])
-    }
-
-    override fun getItemCount() = dataSet.size
 }
