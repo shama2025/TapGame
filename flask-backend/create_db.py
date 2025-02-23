@@ -6,10 +6,13 @@ conn = sqlite3.connect("leaderboad.db")
 cursor = conn.cursor()
 
 # Create a table
-cursor.execute("CREATE TABLE leaderboard(place INTEGER PRIMARY KEY, username TEXT, taps INTEGER)")
+cursor.execute(
+    "CREATE TABLE leaderboard(place INTEGER PRIMARY KEY, username TEXT, taps INTEGER)"
+)
 
 # Insert values into the table
-cursor.execute("""
+cursor.execute(
+    """
 INSERT INTO leaderboard VALUES
                (1, 'Player 1', 500),
                (2, 'Player 2', 475),
@@ -21,7 +24,8 @@ INSERT INTO leaderboard VALUES
                (8, 'Player 8', 350),
                (9, 'Player 9', 330),
                (10, 'Player 10', 310)
-""")
+"""
+)
 
 # Update table
 conn.commit()

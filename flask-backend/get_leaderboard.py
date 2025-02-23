@@ -1,6 +1,7 @@
 # This code will return a leaderboard from the leaderboard table
 import sqlite3
 
+
 def get_leaderboard():
     """
     Access top 10 values from leaderboard table
