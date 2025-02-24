@@ -14,3 +14,5 @@
 .cxx
 local.properties
 flask-backend/venv
+flask-backend/*.db
+flask-backend/__pycache__
