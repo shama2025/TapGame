@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -33,7 +32,7 @@ class LeaderboardActivity : AppCompatActivity() {
         setup()
     }
 
-    private fun setup() {
+    private fun setup(): Unit {
         // Will populate activites text field with array of usernames, and taps
         initLeaderBoard()
 
@@ -57,7 +56,7 @@ class LeaderboardActivity : AppCompatActivity() {
             }
         }
 
-    private fun initLeaderBoard() {
+    private fun initLeaderBoard(): Unit {
         // Will initialize leader board on setup
         val players = listOf(
             tempLeaderboardList("PLayer 1", 50),

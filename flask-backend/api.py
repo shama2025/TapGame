@@ -1,3 +1,4 @@
+# This is a basic flask api to handle get and post requests
 from flask import Flask, jsonify, make_response, request
 from get_leaderboard import get_leaderboard_top_ten
 from update_leaderboard import up_leaderboard

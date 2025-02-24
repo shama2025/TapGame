@@ -5,4 +5,6 @@
     <string name="status">User Menu</string>
     <string name="current_high_score_key">High Score</string>
     <string name="current_taps_key">Current Taps</string>
+    <string name="username_key">Username</string>
+    <string name="username_val">Player 1</string>
 </resources>

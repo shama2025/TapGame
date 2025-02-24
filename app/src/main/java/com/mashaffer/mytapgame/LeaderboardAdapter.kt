@@ -3,11 +3,8 @@ package com.mashaffer.mytapgame
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.MarginLayoutParams
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import org.w3c.dom.Text
 
 class LeaderboardAdapter (
     private val players: List<LeaderboardActivity.tempLeaderboardList>) :
@@ -24,9 +21,9 @@ class LeaderboardAdapter (
     }
 
     // Number of players
-    override fun getItemCount() = players.size
+    override fun getItemCount(): Int = players.size
 
-    override fun onBindViewHolder(holder: ViewHoler, position: Int) {
+    override fun onBindViewHolder(holder: ViewHoler, position: Int): Unit {
         holder.bind(position)
     }
     inner class ViewHoler(item: View): RecyclerView.ViewHolder(item){
