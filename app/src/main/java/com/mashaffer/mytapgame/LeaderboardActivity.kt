@@ -23,7 +23,8 @@ class LeaderboardActivity : AppCompatActivity() {
 
     private val leaderBoardView: RecyclerView by lazy {findViewById(R.id.leaderBoard) }
     private val mainNav: BottomNavigationView by lazy { findViewById(R.id.main_navigation) }
-
+    private var username: String? = ""
+    private val utilCls by lazy { Util() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,12 +58,16 @@ class LeaderboardActivity : AppCompatActivity() {
         }
 
     private fun initLeaderBoard(): Unit {
+        val username = intent.getStringExtra("Username")?.takeIf { it.isNotEmpty() } ?: ""
+
         // Will initialize leader board on setup
         val players = listOf(
             tempLeaderboardList("PLayer 1", 50),
             tempLeaderboardList("Player 2", 500),
             tempLeaderboardList("Player 3", 53)
         )
+
+
         val sortedPlayers = players.sortedByDescending { it.taps }
         val customAdapter = LeaderboardAdapter(sortedPlayers)
         val recyclerView: RecyclerView = findViewById(R.id.leaderBoard)

@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     private val highScore: TextView by lazy { findViewById(R.id.high_score) }
     private val mainNav: BottomNavigationView by lazy { findViewById(R.id.main_navigation) }
     private val usernameView: TextView by lazy {findViewById(R.id.username_view)}
+    private val utilCls by lazy {Util()}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity() {
            getUserName()
         }
 
+        //utilCls.loadUserName()
         loadUserName()
         val highScoreTaps = getHighScore()
         // var taps = getLastTaps()
@@ -45,9 +47,9 @@ class MainActivity : AppCompatActivity() {
         tapBtn.setOnClickListener {
             taps = taps + 1
             when {
-                taps!! >= highScoreTaps -> {
+                taps >= highScoreTaps -> {
                     highScore.text = "High Score: $taps"
-                    writeToHighScore(taps!!)
+                    writeToHighScore(taps)
                 }
             }
             numTaps.text = "Taps: $taps"
@@ -64,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                         // And then check to see if the value exists in the top ten
                         // If it does then don't adjust array
                         // If it doesn't then append to end of array and display place value
-                        startActivity(Intent(this, LeaderboardActivity::class.java).apply {
+                        startActivity(Intent(this, LeaderboardActivity::class.java).putExtra("Username",usernameView.text).apply {
                             action = Intent.ACTION_VIEW
                         })
                     } catch (e: ActivityNotFoundException) {
