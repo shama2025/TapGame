@@ -1,30 +1,26 @@
 package com.mashaffer.mytapgame
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.launch
 
-public class Util(): ViewModel() {
 
-    companion object{
-        private val apiService: ApiService = ApiService()
-        private val _leaderboardData = MutableLiveData<List<Leaderboard>>()
-    }
-
-    fun fetchLeaderboard(){
-        viewModelScope.launch {
-            try{
-                val res = apiService.getLeaderboard()
-                Log.i("Util", "This is the response body: ${res}")
-                _leaderboardData.postValue(res)
-            }catch(e:Exception){
-                _leaderboardData.postValue(emptyList())
+class Util: ViewModel() {
+    val leaderboardApi = LeaderboardApiServiceHelper.getInstance().create(LeaderbardApiServiceInterface::class.java)
+    fun getLeaderboard(callback: LeaderboardCallback) {
+    viewModelScope.launch {
+        try{
+            val result = leaderboardApi.getLeaderboard()
+            if(result.isSuccessful){
+                Log.i("Util", "Here is the result from the API: ${result.body().toString()}")
+                callback.onResult(result.body().toString())
             }
+        }catch (e:Exception){
+            Log.i("Util", "Error when accessing Flask API: ${e.message}}")
+            callback.onError(e.message.toString())
         }
-    }
 
+    }
+    }
 }

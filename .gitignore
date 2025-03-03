@@ -16,4 +16,5 @@ local.properties
 flask-backend/venv
 flask-backend/*.db
 flask-backend/__pycache__
+flask-backend/.pytest_cache
 .name

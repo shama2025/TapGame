@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
     private val highScore: TextView by lazy { findViewById(R.id.high_score) }
     private val mainNav: BottomNavigationView by lazy { findViewById(R.id.main_navigation) }
     private val usernameView: TextView by lazy {findViewById(R.id.username_view)}
-    private val utilCls by lazy {Util()}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

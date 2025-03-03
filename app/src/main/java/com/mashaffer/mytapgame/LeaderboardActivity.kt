@@ -6,16 +6,10 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class LeaderboardActivity : AppCompatActivity() {
-    companion object{
-        private val apiService: ApiService = ApiService()
-        private val utilCls: Util = Util()
-    }
+class LeaderboardActivity : AppCompatActivity(), LeaderboardCallback {
+
 
     // Populate the view
     data class tempLeaderboardList(val username: String, val taps: Int) : Comparable<Any> {
@@ -24,14 +18,16 @@ class LeaderboardActivity : AppCompatActivity() {
         }
     }
 
-    private val leaderBoardView: RecyclerView by lazy {findViewById(R.id.leaderBoard) }
+//private val leaderBoardView: RecyclerView by lazy {findViewById(R.id.leaderBoard) }
     private val mainNav: BottomNavigationView by lazy { findViewById(R.id.main_navigation) }
     private var username: String? = ""
-
+    private val util:Util = Util()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.leaderboard_activity)
+
+        util.getLeaderboard(this)
         setup()
     }
 
@@ -68,7 +64,9 @@ class LeaderboardActivity : AppCompatActivity() {
 //            tempLeaderboardList("Player 2", 500),
 //            tempLeaderboardList("Player 3", 53)
 //        )
-       val players = utilCls.fetchLeaderboard()
+       //val players = utilCls.fetchLeaderboard()
+
+      // Log.i("Leaderboard", "Here is data from the API ${players}")
 
 
 //        val sortedPlayers = players.sortedByDescending { it.taps }
@@ -76,5 +74,19 @@ class LeaderboardActivity : AppCompatActivity() {
 //        val recyclerView: RecyclerView = findViewById(R.id.leaderBoard)
 //        recyclerView.layoutManager = LinearLayoutManager(this)
 //        recyclerView.adapter = customAdapter
+    }
+
+    override fun onResult(data: String) {
+        // Handle the successful response here
+        Log.i("Activity", "Received leaderboard data: $data")
+        // Send data to shared preferences on app load
+        // Then in activity call the data to populate recyclerview
+        
+
+    }
+
+    override fun onError(errorMessage: String) {
+        // Handle error here
+        Log.e("Activity", "Error fetching leaderboard: $errorMessage")
     }
 }
