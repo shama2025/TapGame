@@ -31,9 +31,9 @@ def update_leaderboard():
     This route will focus on updating the
     leaderboard with the players score
     """
-    player = request.args.get("player")
+    username = request.args.get("username")
     taps = request.args.get("taps")
-    flag, res = up_leaderboard(player, taps)
+    flag, res = up_leaderboard(username, taps)
 
     if flag:
         return Response(json.dumps(res), 200, content_type="text/plain")
@@ -44,7 +44,6 @@ def update_leaderboard():
 
 @app.route("/username_exists", methods=["GET"])
 def check_username():
-    print("Testing username exists")
     """
     This route is used to check if a username already exists
     when a user creates a new player
@@ -52,9 +51,14 @@ def check_username():
     username = request.args.get("username")
 
     res, flag = check_username_exists(username)
-    if flag:
+
+    if flag and res is None:
         return Response(
             json.dumps("Username was added"), 200, content_type="text/plain"
+        )
+    elif not flag  and res != None:
+        return Response(
+            json.dumps("Username exists"), 400, content_type="text/plain"
         )
     else:
         return Response(

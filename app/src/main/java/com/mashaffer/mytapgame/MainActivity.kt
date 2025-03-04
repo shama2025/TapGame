@@ -13,18 +13,21 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.gson.Gson
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), LeaderboardCallback  {
 
     private val tapBtn: ImageButton by lazy { findViewById(R.id.imgBtn) }
     private val numTaps: TextView by lazy { findViewById(R.id.numTaps) }
     private val highScore: TextView by lazy { findViewById(R.id.high_score) }
     private val mainNav: BottomNavigationView by lazy { findViewById(R.id.main_navigation) }
     private val usernameView: TextView by lazy {findViewById(R.id.username_view)}
+    private val util:Util = Util()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        util.getLeaderboard(this)
         setContentView(R.layout.activity_main)
         setup()
     }
@@ -65,7 +68,11 @@ class MainActivity : AppCompatActivity() {
                         // And then check to see if the value exists in the top ten
                         // If it does then don't adjust array
                         // If it doesn't then append to end of array and display place value
-                        startActivity(Intent(this, LeaderboardActivity::class.java).putExtra("Username",usernameView.text).apply {
+                        val playerBundle = Bundle().apply {
+                            putString("Username", usernameView.text.toString())
+                            putInt("Taps", taps)
+                        }
+                        startActivity(Intent(this, LeaderboardActivity::class.java).putExtras(playerBundle).apply {
                             action = Intent.ACTION_VIEW
                         })
                     } catch (e: ActivityNotFoundException) {
@@ -76,21 +83,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getSharedPrefs() = getPreferences(Context.MODE_PRIVATE)
 
     private fun writeToHighScore(newHighScore: Int): Unit {
-        getSharedPrefs()?.edit()?.putInt(getString(R.string.current_high_score_key), newHighScore)?.apply()
+        util.getSharedPrefs(this)?.edit()?.putInt(getString(R.string.current_high_score_key), newHighScore)?.apply()
     }
 
-    private fun getHighScore(): Int = getSharedPrefs()?.getInt(getString(R.string.current_high_score_key), 0) ?: 0
+    private fun getHighScore(): Int = util.getSharedPrefs(this)?.getInt(getString(R.string.current_high_score_key), 0) ?: 0
 
     private fun hasUserName(): Boolean {
-        return getSharedPrefs()?.getString("Username", "")?.isNotEmpty() ?: false
+        return util.getSharedPrefs(this)?.getString(getString(R.string.username_val), "")?.isNotEmpty() ?: false
     }
 
     private fun loadUserName(): Unit{
-        usernameView.width = "Username: ${getSharedPrefs()?.getString("Username","")}".length
-        usernameView.text = "Username: ${getSharedPrefs()?.getString("Username","")}"
+        usernameView.width = "Username: ${util.getSharedPrefs(this)?.getString(getString(R.string.username_val),"")}".length
+        usernameView.text = "Username: ${util.getSharedPrefs(this)?.getString(getString(R.string.username_val),"")}"
     }
 
     private fun getUserName(): Unit {
@@ -102,14 +108,17 @@ class MainActivity : AppCompatActivity() {
             .setPositiveButton("Submit") { dialog, _ ->
                 try {
                     val username = usernameEditText?.text?.toString() ?: ""
+                    util.checkUsername(this, username)
                     if (username.isNotEmpty()) {
-                        // Save the username
-                        getSharedPrefs()?.edit()?.putString("Username", username)?.apply()
+//                        if(onUsernameExists()) {
+                            // Save the username
+                            util.getSharedPrefs(this)?.edit()?.putString(getString(R.string.username_val), username)?.apply()
 
-                        Log.i("Alert Dialog", "Username was saved!")
-                        dialog.dismiss()
+                            Log.i("Alert Dialog", "Username was saved!")
+                            dialog.dismiss()
+                       // }
                     } else {
-                        usernameEditText?.error = "Username cannot be empty"
+                        usernameEditText?.error = "Username input cannot be empty/username is taken"
                     }
                 } catch (e: Exception) {
                     Log.e("AlertDialog", "Error handling username submission", e)
@@ -121,9 +130,32 @@ class MainActivity : AppCompatActivity() {
         builder.create().show()
     }
 
+
+    override fun onGetLeaderboardResult(players: List<Player>) {
+        val editor = util.getSharedPrefs(this).edit()
+        players.forEachIndexed { index, player ->
+            val json = Gson().toJson(player) // Serialize to proper JSON
+            editor.putString("player_$index", json)
+        }
+        editor.apply()
+    }
+
+    override fun onUpdateLeaderboardResult(flag: Boolean): Boolean{
+        TODO("here to fulfill interface requirements")
+    }
+
+    override fun onError(errorMessage: String) {
+        // Handle error here
+        Log.e("Activity", "Error fetching leaderboard: $errorMessage")
+    }
+
     /*** Side board functions (functions that I may implement later due to changes in user demands)*/
 //    private fun writeCurrentTaps(currentTaps: Int) {
 //        getSharedPrefs()?.edit()?.putInt(getString(R.string.current_taps_key), currentTaps)?.apply()
 //    }
 //private fun getLastTaps() = getSharedPrefs()?.getInt(getString(R.string.current_taps_key), 0) ?: 0
+//    override fun onUsernameExists(flag: Boolean): Boolean{
+//        Log.i("Main", "Response $flag")
+//        return flag
+//    }
 }

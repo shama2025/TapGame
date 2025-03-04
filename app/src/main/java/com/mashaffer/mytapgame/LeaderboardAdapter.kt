@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class LeaderboardAdapter (
-    private val players: List<LeaderboardActivity.tempLeaderboardList>) :
+class LeaderboardAdapter(
+    private val players: List<Player>?
+) :
     RecyclerView.Adapter<LeaderboardAdapter.ViewHoler>() {
     companion object{
         private const val MARGIN_SIZE = 20
@@ -21,7 +22,7 @@ class LeaderboardAdapter (
     }
 
     // Number of players
-    override fun getItemCount(): Int = players.size
+    override fun getItemCount(): Int = players!!.size
 
     override fun onBindViewHolder(holder: ViewHoler, position: Int): Unit {
         holder.bind(position)
@@ -35,8 +36,8 @@ class LeaderboardAdapter (
         val placeTextView: TextView = item.findViewById(R.id.place_field)
 
         fun bind(position: Int){
-            tapsTextView.text = "Taps: ${String.format(players[position].taps.toString())}"
-            usernameTextView.text = "${players[position].username}"
+            tapsTextView.text = "Taps: ${String.format(players?.get(position)?.taps.toString())}"
+            usernameTextView.text = "${players?.get(position)?.username}"
             placeTextView.text = "Place: ${(position + 1)}"
         }
     }

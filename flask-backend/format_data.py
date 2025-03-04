@@ -6,10 +6,10 @@ def format_data(players):
     """
     This function will format the data into json objects
     """
-    Player = namedtuple("Player", ["place", "name", "taps"])
+    Player = namedtuple("Player", ["place", "username", "taps"])
 
     data = [
-        Player(place=player[0], name=player[1], taps=player[2])._asdict()
+        Player(place=player[0], username=player[1], taps=player[2])._asdict()
         for player in players
     ]
 

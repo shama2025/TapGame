@@ -22,7 +22,7 @@ def check_username_exists(username):
         if result is None:
             """Then add the username to the database setting taps to 0"""
             flag, res = up_leaderboard(player=username, taps=0)
-            return res, flag
+            return None,flag
         else:
             return "Username already exists!", False
 
