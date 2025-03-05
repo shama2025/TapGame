@@ -52,6 +52,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2’")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation ("com.github.jinatonic.confetti:confetti:1.1.2")
 
 
 }

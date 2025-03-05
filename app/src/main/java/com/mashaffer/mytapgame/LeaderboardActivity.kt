@@ -18,7 +18,6 @@ class LeaderboardActivity : AppCompatActivity(), LeaderboardCallback {
 //private val leaderBoardView: RecyclerView by lazy {findViewById(R.id.leaderBoard) }
     private val mainNav: BottomNavigationView by lazy { findViewById(R.id.main_navigation) }
     private val refreshBtn: ImageButton by lazy {findViewById(R.id.refresh_btn)}
-    private var username: String? = ""
     private val gson = Gson()
     private val util: Util = Util()
 
@@ -65,7 +64,6 @@ class LeaderboardActivity : AppCompatActivity(), LeaderboardCallback {
 
 
     private fun initLeaderBoard(): Unit {
-        val username = intent.getStringExtra("Username")?.takeIf { it.isNotEmpty() } ?: ""
         val players = mutableListOf<Player>()
         for (index in 0 until 10) {
             val json = util.getSharedPrefs(this).getString("player_$index", "{}")

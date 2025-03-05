@@ -1,8 +1,8 @@
 package com.mashaffer.mytapgame
 
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
@@ -12,11 +12,13 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 
-class MainActivity : AppCompatActivity(), LeaderboardCallback  {
 
+class MainActivity : AppCompatActivity(), LeaderboardCallback  {
+    private lateinit var main:ConstraintLayout
     private val tapBtn: ImageButton by lazy { findViewById(R.id.imgBtn) }
     private val numTaps: TextView by lazy { findViewById(R.id.numTaps) }
     private val highScore: TextView by lazy { findViewById(R.id.high_score) }
@@ -47,7 +49,7 @@ class MainActivity : AppCompatActivity(), LeaderboardCallback  {
         highScore.text = "High Score: $highScoreTaps"
 
         tapBtn.setOnClickListener {
-            taps = taps + 1
+            taps = taps + 100
             when {
                 taps >= highScoreTaps -> {
                     highScore.text = "High Score: $taps"
@@ -64,10 +66,6 @@ class MainActivity : AppCompatActivity(), LeaderboardCallback  {
                 R.id.leaderboard_btn -> {
                     try {
                         Log.i("BottomNav", "You clicked Leaderboard")
-                        // To update the leaderboard I can pass tap num through the intent
-                        // And then check to see if the value exists in the top ten
-                        // If it does then don't adjust array
-                        // If it doesn't then append to end of array and display place value
                         val playerBundle = Bundle().apply {
                             putString("Username", usernameView.text.toString())
                             putInt("Taps", taps)
@@ -108,7 +106,6 @@ class MainActivity : AppCompatActivity(), LeaderboardCallback  {
             .setPositiveButton("Submit") { dialog, _ ->
                 try {
                     val username = usernameEditText?.text?.toString() ?: ""
-                    util.checkUsername(this, username)
                     if (username.isNotEmpty()) {
 //                        if(onUsernameExists()) {
                             // Save the username
