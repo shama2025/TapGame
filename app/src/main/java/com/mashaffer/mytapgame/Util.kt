@@ -17,7 +17,7 @@ class Util: ViewModel() {
                 result.body()?.let { callback.onGetLeaderboardResult(it) }
             }
         }catch (e:Exception){
-            Log.i("Util", "Error when accessing Flask API: ${e.message}}")
+            Log.i("Util", "Error when accessing PythonAnywhere API: ${e.message}}")
             callback.onError(e.message.toString())
         }
 

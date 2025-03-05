@@ -3,21 +3,27 @@ package com.mashaffer.mytapgame
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.media.Image
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
 class LeaderboardActivity : AppCompatActivity(), LeaderboardCallback {
 
-//private val leaderBoardView: RecyclerView by lazy {findViewById(R.id.leaderBoard) }
     private val mainNav: BottomNavigationView by lazy { findViewById(R.id.main_navigation) }
-    private val refreshBtn: ImageButton by lazy {findViewById(R.id.refresh_btn)}
+    private val refreshBtn: Button by lazy {findViewById(R.id.refresh_btn)}
     private val gson = Gson()
     private val util: Util = Util()
 
@@ -49,19 +55,29 @@ class LeaderboardActivity : AppCompatActivity(), LeaderboardCallback {
                 }
             }
 
-            refreshBtn.setOnClickListener({
-                val player: Player = Player(
-                    username = intent.getStringExtra("Username")?.takeIf { it.isNotEmpty() } ?: "",
-                    taps = intent.getIntExtra("Taps",0),
-                    place = 0
-                )
-                util.updateLeaderboard(MainActivity(),player)
-                util.getLeaderboard(MainActivity())
-            })
+       lifecycleScope.launch {
+           waitForButtonClick(refreshBtn)
+           val player = Player(
+               username = intent.getStringExtra("Username")?.takeIf { it.isNotEmpty() } ?: "",
+               taps = intent.getIntExtra("Taps", 0),
+               place = 0
+           )
+           util.updateLeaderboard(MainActivity(), player)
+           util.getLeaderboard(MainActivity())
+       }
+
 
         }
 
-
+    suspend fun waitForButtonClick(refreshBtn: Button) = suspendCancellableCoroutine { continuation ->
+        val clickListener = View.OnClickListener {
+            continuation.resume(Unit)
+        }
+        refreshBtn.setOnClickListener(clickListener)
+        continuation.invokeOnCancellation {
+            refreshBtn.setOnClickListener(null)
+        }
+    }
 
     private fun initLeaderBoard(): Unit {
         val players = mutableListOf<Player>()

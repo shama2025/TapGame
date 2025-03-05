@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(), LeaderboardCallback  {
         highScore.text = "High Score: $highScoreTaps"
 
         tapBtn.setOnClickListener {
-            taps = taps + 100
+            taps = taps + 1
             when {
                 taps >= highScoreTaps -> {
                     highScore.text = "High Score: $taps"
